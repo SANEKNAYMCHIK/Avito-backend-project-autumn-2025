@@ -1,12 +1,10 @@
 package services
 
 import (
-	"math/rand"
-	"time"
-
-	"slices"
-
 	"fmt"
+	"math/rand"
+	"slices"
+	"time"
 
 	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/errors"
 	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/models"

@@ -21,12 +21,12 @@ func NewHandler(service services.ReviewService) *Handler {
 func (h *Handler) CreateTeam(c *gin.Context) {
 	var req models.CreateTeamRequest
 	if err := c.BindJSON(&req); err != nil {
-		c.Error(errors.NewInvalidInput("Invalid request body"))
+		_ = c.Error(errors.NewInvalidInput("Invalid request body"))
 		return
 	}
 	result, err := h.service.CreateTeam(req.TeamName, req.Members)
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
@@ -38,12 +38,12 @@ func (h *Handler) CreateTeam(c *gin.Context) {
 func (h *Handler) GetTeam(c *gin.Context) {
 	teamName := c.Query("team_name")
 	if teamName == "" {
-		c.Error(errors.NewInvalidInput("team_name parameter is required"))
+		_ = c.Error(errors.NewInvalidInput("team_name parameter is required"))
 		return
 	}
 	result, err := h.service.GetTeam(teamName)
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		return
 	}
 	c.JSON(http.StatusOK, result)
@@ -53,12 +53,12 @@ func (h *Handler) GetTeam(c *gin.Context) {
 func (h *Handler) SetUserActive(c *gin.Context) {
 	var req models.SetActiveRequest
 	if err := c.BindJSON(&req); err != nil {
-		c.Error(errors.NewInvalidInput("Invalid request body"))
+		_ = c.Error(errors.NewInvalidInput("Invalid request body"))
 		return
 	}
 	result, err := h.service.SetUserActive(req.UserID, req.IsActive)
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -70,12 +70,12 @@ func (h *Handler) SetUserActive(c *gin.Context) {
 func (h *Handler) CreatePR(c *gin.Context) {
 	var req models.CreatePRRequest
 	if err := c.BindJSON(&req); err != nil {
-		c.Error(errors.NewInvalidInput("Invalid request body"))
+		_ = c.Error(errors.NewInvalidInput("Invalid request body"))
 		return
 	}
 	result, err := h.service.CreatePR(req.PullRequestID, req.PullRequestName, req.AuthorID)
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		return
 	}
 	c.JSON(http.StatusCreated, gin.H{
@@ -87,12 +87,12 @@ func (h *Handler) CreatePR(c *gin.Context) {
 func (h *Handler) MergePR(c *gin.Context) {
 	var req models.MergePRRequest
 	if err := c.BindJSON(&req); err != nil {
-		c.Error(errors.NewInvalidInput("Invalid request body"))
+		_ = c.Error(errors.NewInvalidInput("Invalid request body"))
 		return
 	}
 	result, err := h.service.MergePR(req.PullRequestID)
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
@@ -104,12 +104,12 @@ func (h *Handler) MergePR(c *gin.Context) {
 func (h *Handler) ReassignReviewer(c *gin.Context) {
 	var req models.ReassignRequest
 	if err := c.BindJSON(&req); err != nil {
-		c.Error(errors.NewInvalidInput("Invalid request body"))
+		_ = c.Error(errors.NewInvalidInput("Invalid request body"))
 		return
 	}
 	result, err := h.service.ReassignReviewer(req.PullRequestID, req.OldUserID)
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		return
 	}
 	c.JSON(http.StatusOK, result)
@@ -119,12 +119,12 @@ func (h *Handler) ReassignReviewer(c *gin.Context) {
 func (h *Handler) GetUserReviews(c *gin.Context) {
 	userID := c.Query("user_id")
 	if userID == "" {
-		c.Error(errors.NewInvalidInput("user_id parameter is required"))
+		_ = c.Error(errors.NewInvalidInput("user_id parameter is required"))
 		return
 	}
 	result, err := h.service.GetUserReviews(userID)
 	if err != nil {
-		c.Error(err)
+		_ = c.Error(err)
 		return
 	}
 	c.JSON(http.StatusOK, result)

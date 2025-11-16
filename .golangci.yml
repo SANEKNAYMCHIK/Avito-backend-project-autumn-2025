@@ -1,0 +1,17 @@
+version: "2"
+
+linters:
+  default: standard
+
+formatters:
+  enable:
+    - gci
+    - goimports
+
+issues:
+  max-issues-per-linter: 10
+  max-same-issues: 5
+
+run:
+  timeout: 30s
+  tests: false

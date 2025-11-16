@@ -40,28 +40,28 @@ func NewPRExists(prID string) *AppError {
 func NewPRMerged() *AppError {
 	return &AppError{
 		Code:    CodePRMerged,
-		Message: fmt.Sprint("cannot reassign on merged PR"),
+		Message: "cannot reassign on merged PR",
 	}
 }
 
 func NewNotAssigned() *AppError {
 	return &AppError{
 		Code:    CodeNotAssigned,
-		Message: fmt.Sprint("reviewer is not assigned to this PR"),
+		Message: "reviewer is not assigned to this PR",
 	}
 }
 
 func NewNoCandidate() *AppError {
 	return &AppError{
 		Code:    CodeNoCandidate,
-		Message: fmt.Sprintf("no active replacement candidate in team"),
+		Message: "no active replacement candidate in team",
 	}
 }
 
 func NewNotFound() *AppError {
 	return &AppError{
 		Code:    CodeNotFound,
-		Message: fmt.Sprint("resource not found"),
+		Message: "resource not found",
 	}
 }
 

@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/models"
 	"gorm.io/driver/postgres"
@@ -14,8 +15,7 @@ type DB struct {
 }
 
 func Connect() (*DB, error) {
-	// connStr := os.Getenv("DATABASE_URL")
-	connStr := "postgres://user:password@postgres:5432/pr_db?sslmode=disable"
+	connStr := os.Getenv("CONN_STR")
 
 	gormDB, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
@@ -57,10 +57,12 @@ func createCustomIndexes(db *gorm.DB) error {
 	return nil
 }
 
-func (db *DB) Close() error {
+func (db *DB) Close() {
 	sqlDB, err := db.DB.DB()
 	if err != nil {
-		return err
+		log.Printf("Error with sql.DB in gorm.DB:%s", err)
 	}
-	return sqlDB.Close()
+	if err = sqlDB.Close(); err != nil {
+		log.Printf("Database close error:%s", err)
+	}
 }

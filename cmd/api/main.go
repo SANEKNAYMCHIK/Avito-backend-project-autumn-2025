@@ -10,7 +10,9 @@ import (
 	"time"
 
 	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/db"
+	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/handlers"
 	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/repositories"
+	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/services"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,15 +24,40 @@ func main() {
 	defer database.Close()
 
 	repo := repositories.NewRepository(database.DB)
-	_ = repo
+	reviewService := services.NewReviewService(repo)
+	handler := handlers.NewHandler(reviewService)
 
 	r := gin.Default()
 
-	// port := os.Getenv("PORT")
-	// if port == "" {
-	// 	port = "8080"
-	// }
-	port := "8080"
+	r.Use(handlers.ErrorHandler())
+
+	r.GET("/health", func(c *gin.Context) {
+		sqlDB, err := database.DB.DB()
+		if err != nil {
+			c.JSON(500, gin.H{"status": "unhealthy", "error": err.Error()})
+			return
+		}
+
+		if err := sqlDB.Ping(); err != nil {
+			c.JSON(500, gin.H{"status": "unhealthy", "error": err.Error()})
+			return
+		}
+
+		c.JSON(200, gin.H{"status": "healthy"})
+	})
+
+	r.POST("/team/add", handler.CreateTeam)
+	r.GET("/team/get", handler.GetTeam)
+	r.POST("/users/setIsActive", handler.SetUserActive)
+	r.POST("/pullRequest/create", handler.CreatePR)
+	r.POST("/pullRequest/merge", handler.MergePR)
+	r.POST("/pullRequest/reassign", handler.ReassignReviewer)
+	r.GET("/users/getReview", handler.GetUserReviews)
+
+	port := os.Getenv("SERVICE_PORT")
+	if port == "" {
+		port = "8080"
+	}
 
 	// Graceful shutdown
 	srv := &http.Server{
@@ -57,5 +84,4 @@ func main() {
 	}
 
 	log.Println("Server exited gracefully")
-
 }
