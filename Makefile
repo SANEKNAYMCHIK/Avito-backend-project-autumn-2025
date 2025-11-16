@@ -9,6 +9,7 @@ help:
 	@echo "  build           - Build the application"
 	@echo "  up              - Start the application with docker-compose"
 	@echo "  down            - Stop the application"
+	@echo "  test            - Testing package handlers"
 	@echo "  lint            - Run linter"
 	@echo "  clean           - Clean up containers and volumes"
 	@echo "  logs            - Show logs of the service"
@@ -22,6 +23,9 @@ up:
 
 down:
 	$(DOCKER_COMPOSE) down
+
+test:
+	$(GO) test -v ./internal/handlers/... -cover
 
 lint:
 	$(GOLANGCI_LINT) run
