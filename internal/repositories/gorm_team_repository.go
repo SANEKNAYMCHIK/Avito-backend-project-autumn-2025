@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/errors"
 	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/models"
 	"gorm.io/gorm"
 )
@@ -14,6 +15,13 @@ func NewGormTeamRepository(db *gorm.DB) TeamRepository {
 }
 
 func (g *GormTeamRepository) CreateTeam(team *models.Team, users []models.User) error {
+	exists, err := g.TeamExists(team.Name)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return errors.NewTeamExists(team.Name)
+	}
 	return g.db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(team).Error; err != nil {
 			return err
@@ -33,7 +41,7 @@ func (g *GormTeamRepository) GetTeamByName(name string) (*models.Team, error) {
 	res := g.db.Where("name = ?", name).First(&team)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, errors.NewNotFound()
 		}
 		return nil, res.Error
 	}

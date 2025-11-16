@@ -17,9 +17,9 @@ type UserRepository interface {
 }
 
 type PRRepository interface {
+	PRExists(id string) (bool, error)
 	CreatePR(pr *models.PullRequest) error
 	GetPRByID(id string) (*models.PullRequest, error)
 	UpdatePR(pr *models.PullRequest) error
 	GetPRsByReviewer(userID string) ([]models.PullRequest, error)
-	PRExists(id string) (bool, error)
 }

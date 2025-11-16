@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/errors"
 	"github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025/internal/models"
 	"gorm.io/gorm"
 )
@@ -18,7 +19,7 @@ func (g *GormUserRepository) GetUserByID(id string) (*models.User, error) {
 	res := g.db.Where("id = ?", id)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, errors.NewNotFound()
 		}
 		return nil, res.Error
 	}
@@ -45,14 +46,14 @@ func (g *GormUserRepository) GetUserTeam(userID string) (*models.Team, error) {
 	res := g.db.Where("id = ?", userID).First(&user)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, errors.NewNotFound()
 		}
 		return nil, res.Error
 	}
 	res = g.db.Where("id = ?", user.TeamID).First(&team)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
-			return nil, nil
+			return nil, errors.NewNotFound()
 		}
 		return nil, res.Error
 	}
