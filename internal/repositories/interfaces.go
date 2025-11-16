@@ -11,7 +11,7 @@ type TeamRepository interface {
 
 type UserRepository interface {
 	GetUserByID(id string) (*models.User, error)
-	UpdateUser(user *models.User) error
+	UpdateUser(userID string, isActive bool) error
 	GetActiveUsersByTeam(teamID string) ([]models.User, error)
 	GetUserTeam(userID string) (*models.Team, error)
 }

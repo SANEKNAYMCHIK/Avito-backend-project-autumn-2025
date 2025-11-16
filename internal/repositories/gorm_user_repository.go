@@ -26,8 +26,8 @@ func (g *GormUserRepository) GetUserByID(id string) (*models.User, error) {
 	return &user, nil
 }
 
-func (g *GormUserRepository) UpdateUser(user *models.User) error {
-	res := g.db.Save(user)
+func (g *GormUserRepository) UpdateUser(userID string, isActive bool) error {
+	res := g.db.Model(&models.User{}).Where("id = ?", userID).Update("is_active", isActive)
 	return res.Error
 }
 

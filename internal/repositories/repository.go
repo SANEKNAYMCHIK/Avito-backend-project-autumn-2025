@@ -12,6 +12,6 @@ func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
 		Team: NewGormTeamRepository(db),
 		User: NewGormUserRepository(db),
-		PR:   NewGormPRRepository(db), // TODO
+		PR:   NewGormPRRepository(db),
 	}
 }

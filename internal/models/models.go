@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"github.com/lib/pq"
 )
 
 type Team struct {
@@ -21,12 +23,12 @@ type User struct {
 }
 
 type PullRequest struct {
-	ID        string     `gorm:"primaryKey;type:varchar(255)"`
-	Title     string     `gorm:"not null"`
-	AuthorID  string     `gorm:"not null;type:varchar(255)"`
-	Author    User       `gorm:"foreignKey:AuthorID"`
-	Status    string     `gorm:"default:'open'"`
-	Reviewers []string   `gorm:"type:text[]"`
-	CreatedAt time.Time  ``
-	MergedAt  *time.Time ``
+	ID        string         `gorm:"primaryKey;type:varchar(255)"`
+	Title     string         `gorm:"not null"`
+	AuthorID  string         `gorm:"not null;type:varchar(255)"`
+	Author    User           `gorm:"foreignKey:AuthorID"`
+	Status    string         `gorm:"default:'OPEN'"`
+	Reviewers pq.StringArray `gorm:"type:text[]"`
+	CreatedAt time.Time      ``
+	MergedAt  *time.Time     ``
 }

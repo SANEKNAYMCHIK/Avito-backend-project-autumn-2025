@@ -5,12 +5,13 @@ import "fmt"
 type ErrCode string
 
 const (
-	CodeTeamExists  ErrCode = "TEAM_EXISTS"
-	CodePRExists    ErrCode = "PR_EXISTS"
-	CodePRMerged    ErrCode = "PR_MERGED"
-	CodeNotAssigned ErrCode = "NOT_ASSIGNED"
-	CodeNoCandidate ErrCode = "NO_CANDIDATE"
-	CodeNotFound    ErrCode = "NOT_FOUND"
+	CodeTeamExists   ErrCode = "TEAM_EXISTS"
+	CodePRExists     ErrCode = "PR_EXISTS"
+	CodePRMerged     ErrCode = "PR_MERGED"
+	CodeNotAssigned  ErrCode = "NOT_ASSIGNED"
+	CodeNoCandidate  ErrCode = "NO_CANDIDATE"
+	CodeNotFound     ErrCode = "NOT_FOUND"
+	CodeInvalidInput ErrCode = "INVALID_INPUT"
 )
 
 type AppError struct {
@@ -25,14 +26,14 @@ func (e *AppError) Error() string {
 func NewTeamExists(teamName string) *AppError {
 	return &AppError{
 		Code:    CodeTeamExists,
-		Message: fmt.Sprintf("'%s' already exists", teamName),
+		Message: fmt.Sprintf("%s already exists", teamName),
 	}
 }
 
 func NewPRExists(prID string) *AppError {
 	return &AppError{
 		Code:    CodePRExists,
-		Message: fmt.Sprintf("PR '%s' already exists", prID),
+		Message: fmt.Sprintf("PR %s already exists", prID),
 	}
 }
 
@@ -61,6 +62,13 @@ func NewNotFound() *AppError {
 	return &AppError{
 		Code:    CodeNotFound,
 		Message: fmt.Sprint("resource not found"),
+	}
+}
+
+func NewInvalidInput(message string) *AppError {
+	return &AppError{
+		Code:    CodeInvalidInput,
+		Message: message,
 	}
 }
 
