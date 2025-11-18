@@ -23,7 +23,6 @@ type UserResponse struct {
 type PullRequestResponse struct {
 	AssignedReviewers []string   `json:"assigned_reviewers"`
 	AuthorId          string     `json:"author_id"`
-	CreatedAt         *time.Time `json:"createdAt"`
 	MergedAt          *time.Time `json:"mergedAt"`
 	PullRequestId     string     `json:"pull_request_id"`
 	PullRequestName   string     `json:"pull_request_name"`
@@ -31,10 +30,11 @@ type PullRequestResponse struct {
 }
 
 type PullRequestShort struct {
-	AuthorId        string `json:"author_id"`
-	PullRequestId   string `json:"pull_request_id"`
-	PullRequestName string `json:"pull_request_name"`
-	Status          string `json:"status"`
+	AssignedReviewers []string `json:"assigned_reviewers"`
+	AuthorId          string   `json:"author_id"`
+	PullRequestId     string   `json:"pull_request_id"`
+	PullRequestName   string   `json:"pull_request_name"`
+	Status            string   `json:"status"`
 }
 
 type ReassignResponse struct {
@@ -42,9 +42,16 @@ type ReassignResponse struct {
 	ReplacedBy string              `json:"replaced_by"`
 }
 
+type PullRequestReview struct {
+	AuthorId        string `json:"author_id"`
+	PullRequestId   string `json:"pull_request_id"`
+	PullRequestName string `json:"pull_request_name"`
+	Status          string `json:"status"`
+}
+
 type UserPRsResponse struct {
-	UserID       string             `json:"user_id"`
-	PullRequests []PullRequestShort `json:"pull_requests"`
+	UserID       string              `json:"user_id"`
+	PullRequests []PullRequestReview `json:"pull_requests"`
 }
 
 type CreateTeamRequest struct {

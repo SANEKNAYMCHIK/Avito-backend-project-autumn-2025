@@ -14,33 +14,33 @@ func NewGormPRRepository(db *gorm.DB) *GormPRRepository {
 	return &GormPRRepository{db: db}
 }
 
-func (r *GormPRRepository) PRExists(id string) (bool, error) {
+func (g *GormPRRepository) PRExists(id string) (bool, error) {
 	var count int64
-	res := r.db.Model(&models.PullRequest{}).Where("id = ?", id).Count(&count)
+	res := g.db.Model(&models.PullRequest{}).Where("id = ?", id).Count(&count)
 	if res.Error != nil {
 		return false, res.Error
 	}
 	return count > 0, nil
 }
 
-func (r *GormPRRepository) CreatePR(pr *models.PullRequest) error {
-	exists, err := r.PRExists(pr.ID)
+func (g *GormPRRepository) CreatePR(pr *models.PullRequest) error {
+	exists, err := g.PRExists(pr.ID)
 	if err != nil {
 		return err
 	}
 	if exists {
 		return errors.NewPRExists(pr.ID)
 	}
-	result := r.db.Create(pr)
+	result := g.db.Create(pr)
 	if result.Error != nil {
 		return result.Error
 	}
 	return nil
 }
 
-func (r *GormPRRepository) GetPRByID(id string) (*models.PullRequest, error) {
+func (g *GormPRRepository) GetPRByID(id string) (*models.PullRequest, error) {
 	var pr models.PullRequest
-	res := r.db.Where("id = ?", id).First(&pr)
+	res := g.db.Where("id = ?", id).First(&pr)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
 			return nil, errors.NewNotFound()
@@ -58,9 +58,9 @@ func (r *GormPRRepository) UpdatePR(pr *models.PullRequest) error {
 	return nil
 }
 
-func (r *GormPRRepository) GetPRsByReviewer(userID string) ([]models.PullRequest, error) {
+func (g *GormPRRepository) GetPRsByReviewer(userID string) ([]models.PullRequest, error) {
 	var prs []models.PullRequest
-	res := r.db.Where("? = ANY(reviewers)", userID).Find(&prs)
+	res := g.db.Where("? = ANY(reviewers)", userID).Find(&prs)
 	if res.Error != nil {
 		return nil, res.Error
 	}

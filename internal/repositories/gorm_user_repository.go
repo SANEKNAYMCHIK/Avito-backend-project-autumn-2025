@@ -16,7 +16,7 @@ func NewGormUserRepository(db *gorm.DB) UserRepository {
 
 func (g *GormUserRepository) GetUserByID(id string) (*models.User, error) {
 	var user models.User
-	res := g.db.Where("id = ?", id)
+	res := g.db.Where("id = ?", id).First(&user)
 	if res.Error != nil {
 		if res.Error == gorm.ErrRecordNotFound {
 			return nil, errors.NewNotFound()

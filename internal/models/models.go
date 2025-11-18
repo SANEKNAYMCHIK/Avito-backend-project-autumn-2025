@@ -29,6 +29,5 @@ type PullRequest struct {
 	Author    User           `gorm:"foreignKey:AuthorID"`
 	Status    string         `gorm:"default:'OPEN'"`
 	Reviewers pq.StringArray `gorm:"type:text[]"`
-	CreatedAt time.Time      ``
 	MergedAt  *time.Time     ``
 }

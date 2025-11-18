@@ -88,7 +88,6 @@ func (s *reviewService) SetUserActive(userID string, isActive bool) (*models.Use
 	if err != nil {
 		return nil, err
 	}
-	user.IsActive = isActive
 	team, err := s.repo.User.GetUserTeam(userID)
 	if err != nil {
 		return nil, err
@@ -101,7 +100,7 @@ func (s *reviewService) SetUserActive(userID string, isActive bool) (*models.Use
 	}, nil
 }
 
-func (s *reviewService) CreatePR(prID, title, authorID string) (*models.PullRequestResponse, error) {
+func (s *reviewService) CreatePR(prID, title, authorID string) (*models.PullRequestShort, error) {
 	author, err := s.repo.User.GetUserByID(authorID)
 	if err != nil {
 		return nil, err
@@ -119,19 +118,17 @@ func (s *reviewService) CreatePR(prID, title, authorID string) (*models.PullRequ
 		AuthorID:  authorID,
 		Status:    "OPEN",
 		Reviewers: pq.StringArray(reviewers),
-		CreatedAt: time.Now(),
 	}
 	err = s.repo.PR.CreatePR(pr)
 	if err != nil {
 		return nil, err
 	}
-	return &models.PullRequestResponse{
+	return &models.PullRequestShort{
 		PullRequestId:     pr.ID,
 		PullRequestName:   pr.Title,
 		AuthorId:          pr.AuthorID,
 		Status:            pr.Status,
 		AssignedReviewers: pr.Reviewers,
-		CreatedAt:         &pr.CreatedAt,
 	}, nil
 }
 
@@ -249,9 +246,9 @@ func (s *reviewService) GetUserReviews(userID string) (*models.UserPRsResponse, 
 	if err != nil {
 		return nil, err
 	}
-	prShorts := make([]models.PullRequestShort, len(prs))
+	prShorts := make([]models.PullRequestReview, len(prs))
 	for i, pr := range prs {
-		prShorts[i] = models.PullRequestShort{
+		prShorts[i] = models.PullRequestReview{
 			PullRequestId:   pr.ID,
 			PullRequestName: pr.Title,
 			AuthorId:        pr.AuthorID,
@@ -271,7 +268,7 @@ func (s *reviewService) convertPRToResponse(pr *models.PullRequest) *models.Pull
 		AuthorId:          pr.AuthorID,
 		Status:            pr.Status,
 		AssignedReviewers: pr.Reviewers,
-		CreatedAt:         &pr.CreatedAt,
+		MergedAt:          pr.MergedAt,
 	}
 }
 

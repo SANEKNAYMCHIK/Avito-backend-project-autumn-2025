@@ -13,7 +13,7 @@ type UserService interface {
 }
 
 type PRService interface {
-	CreatePR(prID, title, authorID string) (*models.PullRequestResponse, error)
+	CreatePR(prID, title, authorID string) (*models.PullRequestShort, error)
 	MergePR(prID string) (*models.PullRequestResponse, error)
 	ReassignReviewer(prID, oldReviewerID string) (*models.ReassignResponse, error)
 }
