@@ -88,6 +88,10 @@ func (s *reviewService) SetUserActive(userID string, isActive bool) (*models.Use
 	if err != nil {
 		return nil, err
 	}
+	user, err = s.repo.User.GetUserByID(userID)
+	if err != nil {
+		return nil, err
+	}
 	team, err := s.repo.User.GetUserTeam(userID)
 	if err != nil {
 		return nil, err
