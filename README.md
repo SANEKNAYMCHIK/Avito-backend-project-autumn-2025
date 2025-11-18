@@ -35,6 +35,9 @@
 git clone https://github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025.git
 cd Avito-backend-project-autumn-2025
 
+# Создание .env файла по примеру
+cp .env.example .env
+
 # Запуск всех сервисов
 make setup
 

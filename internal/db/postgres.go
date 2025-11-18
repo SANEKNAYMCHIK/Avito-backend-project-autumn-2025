@@ -16,6 +16,9 @@ type DB struct {
 
 func Connect() (*DB, error) {
 	connStr := os.Getenv("CONN_STR")
+	if connStr == "" {
+		connStr = "postgres://admin:admin@postgres:5432/pr_db"
+	}
 
 	gormDB, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
