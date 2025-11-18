@@ -5,9 +5,12 @@ services:
     build: .
     image: pr-service:latest
     container_name: pr-service-app
-    env_file: .env
+    # env_file: .env
     ports:
       - "8080:8080"
+    environment:
+      - SERVICE_PORT=8080
+      - CONN_STR=postgres://admin:admin@postgres:5432/pr_db
     depends_on:
       postgres:
         condition: service_healthy
@@ -15,17 +18,17 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: pull-requests-db
-    env_file: .env
+    # env_file: .env
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=pr_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d pr_db"]
       interval: 5s
       timeout: 5s
       retries: 5
