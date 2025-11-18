@@ -35,8 +35,13 @@
 git clone https://github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025.git
 cd Avito-backend-project-autumn-2025
 
-# Создание .env файла по примеру
-cp .env.example .env
+docker-compose up
+```
+
+```bash
+# Если использовать Makefile
+git clone https://github.com/SANEKNAYMCHIK/Avito-backend-project-autumn-2025.git
+cd Avito-backend-project-autumn-2025
 
 # Запуск всех сервисов
 make setup
